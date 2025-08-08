@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Fake Nitro Boost Panel (Éducatif)</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid #ffffff30;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #ffffff30;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #00d2ff;
+    }
+
+    input, button, select {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+    }
+
+    button {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #2575fc, #6a11cb);
+    }
+
+    .log {
+      background-color: #111;
+      padding: 10px;
+      margin-top: 10px;
+      height: 200px;
+      overflow-y: auto;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 14px;
+      border: 1px solid #333;
+    }
+
+    .gift-output {
+      background-color: #222;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      color: #00ffae;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🎁 Fake Nitro Boost Panel (Éducatif)
+  </header>
+
+  <main>
+    <section>
+      <h2>🔑 Charger des Tokens</h2>
+      <textarea id="tokensInput" rows="4" placeholder="Collez ici vos tokens (fictifs)..."></textarea>
+      <button onclick="loadTokens()">Charger les tokens</button>
+      <div id="tokenCount">Aucun token chargé.</div>
+    </section>
+
+    <section>
+      <h2>🎁 Générer un Nitro Gift</h2>
+      <select id="giftToken">
+        <option disabled selected>-- Sélectionnez un token --</option>
+      </select>
+      <button onclick="generateGift()">Créer un lien cadeau</button>
+      <div class="gift-output" id="giftOutput"></div>
+    </section>
+
+    <section>
+      <h2>🚀 Booster un serveur</h2>
+      <input type="text" id="serverId" placeholder="ID du serveur à booster">
+      <input type="number" id="boostCount" placeholder="Nombre de boosts (2, 14...)" value="14">
+      <button onclick="simulateBoost()">Envoyer les boosts</button>
+    </section>
+
+    <section>
+      <h2>📊 Logs d'activité</h2>
+      <div class="log" id="logBox">
+        Aucun événement pour le moment...
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let tokens = [];
+
+    function log(text) {
+      const logBox = document.getElementById("logBox");
+      const now = new Date().toLocaleTimeString();
+      logBox.innerHTML += `[${now}] ${text}<br>`;
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function loadTokens() {
+      const input = document.getElementById("tokensInput").value.trim();
+      tokens = input.split('\n').filter(t => t.trim() !== '');
+      document.getElementById("tokenCount").innerText = `${tokens.length} token(s) chargé(s).`;
+
+      const select = document.getElementById("giftToken");
+      select.innerHTML = `<option disabled selected>-- Sélectionnez un token --</option>`;
+      tokens.forEach((t, i) => {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.text = `Token #${i + 1}`;
+        select.add(opt);
+      });
+
+      log(`✅ ${tokens.length} token(s) fictif(s) chargé(s).`);
+    }
+
+    function generateGift() {
+      const selected = document.getElementById("giftToken").value;
+      if (selected === "" || selected === null) return alert("Sélectionnez un token.");
+      const fakeCode = Math.random().toString(36).substring(2, 16);
+      const link = `https://discord.gift/${fakeCode}`;
+      document.getElementById("giftOutput").innerText = link;
+      log(`🎁 Lien cadeau Nitro généré pour Token #${parseInt(selected)+1} : ${link}`);
+    }
+
+    function simulateBoost() {
+      const serverId = document.getElementById("serverId").value.trim();
+      const boostCount = parseInt(document.getElementById("boostCount").value);
+      if (!serverId || !boostCount || boostCount < 1) {
+        return alert("Remplis les champs correctement !");
+      }
+      log(`🚀 Simulation de ${boostCount} boost(s) envoyés sur le serveur ${serverId}.`);
+    }
+  </script>
+</body>
+  </html>
